@@ -202,6 +202,60 @@ def list_input_iterator(full_hand,num_simulations = 100000,num_players = 3,displ
 ########################################################
 ########################################################
 ########################################################
+cards_listed = [
+    {'label': '2♥️', 'value': "(2, 'H')"},
+    {'label': '2♦️', 'value': "(2, 'D')"},
+    {'label': '2♠️', 'value': "(2, 'S')"},
+    {'label': '2♣️', 'value': "(2, 'C')"},
+    {'label': '3♥️', 'value': "(3, 'H')"},
+    {'label': '3♦️', 'value': "(3, 'D')"},
+    {'label': '3♠️', 'value': "(3, 'S')"},
+    {'label': '3♣️', 'value': "(3, 'C')"},
+    {'label': '4♥️', 'value': "(4, 'H')"},
+    {'label': '4♦️', 'value': "(4, 'D')"},
+    {'label': '4♠️', 'value': "(4, 'S')"},
+    {'label': '4♣️', 'value': "(4, 'C')"},
+    {'label': '5♥️', 'value': "(5, 'H')"},
+    {'label': '5♦️', 'value': "(5, 'D')"},
+    {'label': '5♠️', 'value': "(5, 'S')"},
+    {'label': '5♣️', 'value': "(5, 'C')"},
+    {'label': '6♥️', 'value': "(6, 'H')"},
+    {'label': '6♦️', 'value': "(6, 'D')"},
+    {'label': '6♠️', 'value': "(6, 'S')"},
+    {'label': '6♣️', 'value': "(6, 'C')"},
+    {'label': '7♥️', 'value': "(7, 'H')"},
+    {'label': '7♦️', 'value': "(7, 'D')"},
+    {'label': '7♠️', 'value': "(7, 'S')"},
+    {'label': '7♣️', 'value': "(7, 'C')"},
+    {'label': '8♥️', 'value': "(8, 'H')"},
+    {'label': '8♦️', 'value': "(8, 'D')"},
+    {'label': '8♠️', 'value': "(8, 'S')"},
+    {'label': '8♣️', 'value': "(8, 'C')"},
+    {'label': '9♥️', 'value': "(9, 'H')"},
+    {'label': '9♦️', 'value': "(9, 'D')"},
+    {'label': '9♠️', 'value': "(9, 'S')"},
+    {'label': '9♣️', 'value': "(9, 'C')"},
+    {'label': '10♥️', 'value':"(10, 'H')"},
+    {'label': '10♦️', 'value':"(10, 'D')"},
+    {'label': '10♠️', 'value':"(10, 'S')"},
+    {'label': '10♣️', 'value':"(10, 'C')"},
+    {'label': 'J♥️', 'value': "(11, 'H')"},
+    {'label': 'J♦️', 'value': "(11, 'D')"},
+    {'label': 'J♠️', 'value': "(11, 'S')"},
+    {'label': 'J♣️', 'value': "(11, 'C')"},
+    {'label': 'Q♥️', 'value': "(12, 'H')"},
+    {'label': 'Q♦️', 'value': "(12, 'D')"},
+    {'label': 'Q♠️', 'value': "(12, 'S')"},
+    {'label': 'Q♣️', 'value': "(12, 'C')"},
+    {'label': 'K♥️', 'value': "(13, 'H')"},
+    {'label': 'K♦️', 'value': "(13, 'D')"},
+    {'label': 'K♠️', 'value': "(13, 'S')"},
+    {'label': 'K♣️', 'value': "(13, 'C')"},
+    {'label': 'A♥️', 'value': "(14, 'H')"},
+    {'label': 'A♦️', 'value': "(14, 'D')"},
+    {'label': 'A♠️', 'value': "(14, 'S')"},
+    {'label': 'A♣️', 'value': "(14, 'C')"},  
+]
 
 
 app = dash.Dash()
@@ -265,6 +319,10 @@ app.layout = html.Div(
                         html.A(
                             html.Button("About Me", id="about-me-button"),
                             href="https://medium.com/@michaelemmert1234",
+                        ),
+                        html.A(
+                            html.Button("Read More", id="about-project-button"),
+                            href="https://medium.com/@michaelemmert1234",
                         )
                     ],
                     className="one-third column",
@@ -275,28 +333,107 @@ app.layout = html.Div(
             className="row flex-display",
             style={"margin-bottom": "5px"},
         ),
-        html.Div(
-            [
-                html.Div(
-                    # dcc.Tabs([
-                    #     dcc.Tab(label = "Randomized Opion",children = [
-                    #         html.Div([
-                    [
-                        dcc.RadioItems(
-                            id = 'rand-selected',
-                            options=[
-                                {'label': 'Selected Cards', 'value': 'selected_cards'},
-                                {'label': 'Randomized Cards', 'value': 'randomized_cards'},
-                            ],
-                            value= 'selected_cards',
-                            labelStyle={'display': 'inline-block'}
-                        ),
+        html.Div([
+            #ABOUT TAB
+            html.Div([
+            dcc.Tabs([
+                dcc.Tab(label = "About", children = [
+                    html.Div([
+                        html.H5('WHat is Texas Holdem Simulator?'),
+                        html.P(
+                            '''
+                            This Dash app enables users to simulate houndreds of thousands of hands of Texas Holdem 
+                            to estimate probabilities of hitting certain hands as well as winning with certain cards.
+                            The app shuffles a deck and distributes cards, recording if the players hand won as well 
+                            as the number of times each hand was hit.  It can take several minutes to iterate through 
+                            simulations.  The Select tab enables you to input cards and the Randomize tab creates random 
+                            card layouts.  Visit the Github listed below to download the Dash app as well as a Jupyter 
+                            Notebook with more capabilities.  Enjoy!  
+                            '''
+                            ),
+                        html.A(
+                            html.Button("GitHub", id="GitHub-button"),
+                            href="https://github.com/MichaelEmmert/Texas_Holdem",
+                        )
+                    ])
+                    ],className="pretty_container"),
+            #SELECT CARD TAB
+            dcc.Tab(label = "Select",children = [
+                html.Div([
                         html.H6(
                             "Number of players sitting at the Table:",
                             className="control_label",
                         ),
                         dcc.Slider(
-                            id='num-players',
+                            id='num-players-s',
+                            min=2, 
+                            max=10, 
+                            step=1, 
+                            value=3,
+                                marks={
+                                    2: '2',
+                                    3: '3',
+                                    4: '4',
+                                    5: '5',
+                                    6: '6',
+                                    7: '7',
+                                    8: '8',
+                                    9: '9',
+                                    10: '10',
+                                },
+                            className="dcc_control"
+                        ),
+                        html.H6('Cards in Hand:'),
+                        dcc.Dropdown(
+                            id='card1-selection-input',
+                            options=cards_listed,
+                            value="(13, 'D')"
+                        ),
+                        dcc.Dropdown(
+                            id='card2-selection-input',
+                            options=cards_listed,
+                            value="(14, 'D')"
+                        ),
+                        html.H6('Cards on the Table:'),
+                        dcc.Dropdown(
+                                id = 'cards-on-table',
+                                options=cards_listed,
+                                value=["(10, 'D')", "(11, 'D')","(12, 'D')"],
+                                multi=True
+                            ),
+                        html.H6("Number of Hands Simulated:", className="control_label"),
+                        dcc.Dropdown(
+                            id='num-sims-s',
+                            options=[
+                                {'label': '1,000', 'value': 1000},
+                                {'label': '10,000', 'value': 10000},
+                                {'label': '100,000', 'value': 100000},
+                                {'label': '1,000,000', 'value': 100000}
+                            ],
+                            value=1000,
+                            className="dcc_control",
+                        ),
+                        html.Div([
+                            html.Button(
+                                'Update',
+                                id = 'selected-Button',
+                                className = 'dcc_control'
+                            )
+                        ],
+                        style={'text-align': 'center'}
+                        )
+                    ]
+                )
+                ],className="pretty_container"),
+            # RANDOMIZE CARDS TAB
+            dcc.Tab(label = "Randomize",children = [
+                html.Div([
+                        html.H6(
+                            "Number of players sitting at the Table:",
+                            className="control_label",
+                        ),
+                        dcc.Slider(
+                            id='num-players-r',
                             min=2, 
                             max=10, 
                             step=1, 
@@ -325,11 +462,12 @@ app.layout = html.Div(
                                 {'label': 'Three', 'value': 3},
                                 {'label': 'Four', 'value': 4}
                             ],
-                            value= 3
+                            value= 3,
+                            labelStyle={'display': 'inline-block'}
                         ),
                         html.H6("Number of Hands Simulated:", className="control_label"),
                         dcc.Dropdown(
-                            id='num-sims',
+                            id='num-sims-r',
                             options=[
                                 {'label': '1,000', 'value': 1000},
                                 {'label': '10,000', 'value': 10000},
@@ -339,25 +477,20 @@ app.layout = html.Div(
                             value=1000,
                             className="dcc_control",
                         ),
-                        # dcc.Dropdown(
-                        #     id='card2-selection-input',
-                        #     options=[
-                        #         {'label': '2♥️', 'value': "(2, 'H')"},
-                        #         {'label': '2♦️', 'value': "(2, 'D')"},
-                        #         {'label': '2♠️', 'value': "(2, 'S')"},
-                        #         {'label': '2♣️', 'value': "(2, 'C')"}
-                        #     ],
-                        #     value="(2, 'D')"
-                        # ),
-                        html.Button(
-                            'Update',
-                            id = 'Randomize-Button',
-                            className = 'dcc_control'
-                        ),
-                    ],
-                   className="pretty_container four columns",
-                   id="cross-filter-options"
-                ),
+                        html.Div([
+                            html.Button(
+                                'Update',
+                                id = 'Randomize-Button',
+                                className = 'dcc_control'
+                            )
+                        ],
+                        style={'text-align': 'center'}
+                        )
+                    ]
+                )
+                ], className="pretty_container")
+                ])
+                ], className="pretty_container four columns"),
 
                 html.Div(
                     [
@@ -366,26 +499,6 @@ app.layout = html.Div(
                         html.Div(
                             [
                             html.H6("Your Hand:"),
-                            dcc.Dropdown(
-                                id='card1-selection-input',
-                                options=[
-                                    {'label': '2♥️', 'value': "(2, 'H')"},
-                                    {'label': '2♦️', 'value': "(2, 'D')"},
-                                    {'label': '2♠️', 'value': "(2, 'S')"},
-                                    {'label': '2♣️', 'value': "(2, 'C')"}
-                                ],
-                                value="(2, 'C')"
-                            ),
-                            dcc.Dropdown(
-                                id='card2-selection-input',
-                                options=[
-                                    {'label': '2♥️', 'value': "(2, 'H')"},
-                                    {'label': '2♦️', 'value': "(2, 'D')"},
-                                    {'label': '2♠️', 'value': "(2, 'S')"},
-                                    {'label': '2♣️', 'value': "(2, 'C')"}
-                                ],
-                                value="(2, 'C')"
-                            ),
                             html.Img(id='Card1-image', width = 100, height = 170),
                             html.Img(id='Card2-image', width = 100, height = 170),
                             ],
@@ -396,21 +509,6 @@ app.layout = html.Div(
                         html.Div(
                             [
                             html.H6("Cards on the Table:"),
-                            dcc.Dropdown(
-                                id = 'cards-on-table',
-                                options=[
-                                    {'label': '3♥️', 'value': "(3, 'H')"},
-                                    {'label': '3♦️', 'value': "(3, 'D')"},
-                                    {'label': '3♠️', 'value': "(3, 'S')"},
-                                    {'label': '3♣️', 'value': "(3, 'C')"},
-                                    {'label': '4♥️', 'value': "(4, 'H')"},
-                                    {'label': '4♦️', 'value': "(4, 'D')"},
-                                    {'label': '4♠️', 'value': "(4, 'S')"},
-                                    {'label': '4♣️', 'value': "(4, 'C')"}
-                                ],
-                                value=["(4, 'D')", "(4, 'C')","(3, 'S')"],
-                                multi=True
-                            ),
                             html.Img(id='Card3-image', width = 100, height = 170),
                             html.Img(id='Card4-image', width = 100, height = 170),
                             html.Img(id='Card5-image', width = 100, height = 170),
@@ -460,48 +558,55 @@ app.layout = html.Div(
         dash.dependencies.Output('Card5-image', 'src'),
         dash.dependencies.Output('Card6-image', 'src')
     ],
-    [dash.dependencies.Input('Randomize-Button', 'n_clicks')],
     [
-        dash.dependencies.State('rand-selected', 'value'),
-        dash.dependencies.State('num-players', 'value'),
+    dash.dependencies.Input('Randomize-Button', 'n_clicks'),
+    dash.dependencies.Input('selected-Button', 'n_clicks')
+    ],
+    [
+        dash.dependencies.State('num-players-r', 'value'),
         dash.dependencies.State('number-cards-displayed', 'value'),
-        dash.dependencies.State('num-sims', 'value'),
+        dash.dependencies.State('num-sims-r', 'value'),
+        dash.dependencies.State('num-players-s', 'value'),
+        dash.dependencies.State('num-sims-s', 'value'),
         dash.dependencies.State('cards-on-table', 'value'),
         dash.dependencies.State('card1-selection-input', 'value'),
         dash.dependencies.State('card2-selection-input', 'value')
     ]
     )
 
-def randomized(n_clicks,rand_selected = 'selected_cards', n_players_input = 2,cards_displayed = 3,num_sims = 1000,
-    cards_on_table = ["(4, 'D')", "(4, 'C')","(3, 'S')"], card1_selection_input = "(2, 'C')",card2_selection_input = "(2, 'H')"):
-    simulated_hands = num_sims
-    if rand_selected == 'selected_cards':
-        ##TABLE##
-
+#This is not ideal but dash does not allow multiple callbacks to the same output so this is a work around
+def singular_function(n_clicks,n_clicks_timestamp, n_players_input = 2,cards_displayed = 3,num_sims = 1000,
+    n_players_s = 2, num_sims_s = 1000,cards_on_table = ["(4, 'D')", "(4, 'C')","(3, 'S')"], card1_selection_input = "(2, 'C')",card2_selection_input = "(2, 'H')"):
+    simulated_hands = 1000
+    changed_id = [p['prop_id'] for p in dash.callback_context.triggered][0]
+    if 'Randomize-Button' in changed_id:
+        simulated_hands = num_sims
+        texas_holdem_selector(n_cards_on_table = cards_displayed, number_of_players = n_players_input, kind = 'randomized')
+    if 'selected-Button' in changed_id:
+        n_cards_on_table = len(cards_on_table)
+        cards_displayed = len(cards_on_table)
+        simulated_hands = num_sims_s
         hand_selected = [eval(card1_selection_input),eval(card2_selection_input)]
         table_cards = []
         for card in cards_on_table:
             table_cards.append(eval(card))
 
-        texas_holdem_selector_list(number_of_players = n_players_input,list_input_hand = hand_selected,list_input_table = table_cards)
+        texas_holdem_selector_list(number_of_players = n_players_s,list_input_hand = hand_selected,list_input_table = table_cards)
 
-
-    elif rand_selected == 'randomized_cards':
-        texas_holdem_selector(n_cards_on_table = cards_displayed, number_of_players = n_players_input, kind = 'randomized')
     ################
     player_card1 = f'assets/cards/{str(Cards[0][0]) + Cards[0][1]}.PNG'
     player_card2 = f'assets/cards/{str(Cards[1][0]) + Cards[1][1]}.PNG'
     if cards_displayed == 0:
-        table1 = 'assets/cards/gray_back.PNG'
-        table2 = 'assets/cards/gray_back.PNG'
-        table3 = 'assets/cards/gray_back.PNG'
-        table4 = 'assets/cards/gray_back.PNG'
+        table1 = 'assets/cards/blank.PNG'
+        table2 = 'assets/cards/blank.PNG'
+        table3 = 'assets/cards/blank.PNG'
+        table4 = 'assets/cards/blank.PNG'
 
     elif cards_displayed == 3:
         table1 = f'assets/cards/{str(table[0][0][0]) + table[0][0][1]}.PNG'
         table2 = f'assets/cards/{str(table[0][1][0]) + table[0][1][1]}.PNG'
         table3 = f'assets/cards/{str(table[0][2][0]) + table[0][2][1]}.PNG'
-        table4 = 'assets/cards/gray_back.PNG'
+        table4 = 'assets/cards/blank.PNG'
     elif cards_displayed == 4:
         table1 = f'assets/cards/{str(table[0][0][0]) + table[0][0][1]}.PNG'
         table2 = f'assets/cards/{str(table[0][1][0]) + table[0][1][1]}.PNG'
@@ -521,7 +626,22 @@ def randomized(n_clicks,rand_selected = 'selected_cards', n_players_input = 2,ca
 
     Y, X = zip(*prob_of_hitting.items())
     hand_hit_graph = {
-            'data': [{'x':X,'y':Y, 'type':'bar', 'name':'Example','orientation':'h'}],
+        'data': [
+            {
+            'x':X,
+            'y':Y,
+            'type':'bar',
+            'name':'Example',
+            'orientation':'h',
+            'marker': {
+                'color': 'rgb(102,102,102)', #'rgb(158,202,225)'
+                'opacity': 0.7,
+                'line': {
+                  'color': 'rgb(0,0,0)',
+                 'width': 1.5
+                        }
+            }
+        }],
         'layout':{
             'title':'Probability of Hitting Each Hand',
             "showlegend": False,
@@ -529,7 +649,8 @@ def randomized(n_clicks,rand_selected = 'selected_cards', n_players_input = 2,ca
             'plot_bgcolor': "#F9F9F9",
             'paper_bgcolor': "#F9F9F9",
             'orientation':'h',
-                        "xaxis": {
+            "xaxis": {
+                "title": 'Probability',
                 "side": "bottom",
                 "type": "linear",
                 "range": [0,100]
@@ -544,13 +665,27 @@ def randomized(n_clicks,rand_selected = 'selected_cards', n_players_input = 2,ca
             }
         }
     winner_graph =  {
-    'data': [{'x':['Probability of Winning'],'y':[probability_of_winning], 'type':'bar', 'name':'Probability of winning'}],
-    'layout':{'title':'Probability of Winning',
+    'data': [
+        {
+        'x':['Probability of Winning'],
+        'y':[probability_of_winning], 
+        'type':'bar', 
+        'name':'Best Hand',
+        'marker': {
+                'color': 'rgb(255,128,128)',
+                'opacity': 0.5,
+                'line': {
+                  'color': 'rgb(255,0,0)',
+                 'width': 3
+                        }
+                }
+    }],
+    'layout':{'title':'Best Hand Probability',
             "showlegend": False,
-            "marker": {"bar": {"color": "white", "width": 1}},
            'plot_bgcolor': "#F9F9F9",
            'paper_bgcolor': "#F9F9F9",
             "yaxis": {
+                "title": 'Probability',
                 "side": "bottom",
                 "type": "linear",
                 "range": [0,100]
@@ -565,7 +700,6 @@ def randomized(n_clicks,rand_selected = 'selected_cards', n_players_input = 2,ca
             }
         }
     return [hand_hit_graph, winner_graph, card1_base64, card2_base64, card3_base64, card4_base64, card5_base64,card6_base64]
-
 
 if __name__ == '__main__':
 	app.run_server(debug = True)
