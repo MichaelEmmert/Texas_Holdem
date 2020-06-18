@@ -1,9 +1,6 @@
 #import dependencies 
 import random
 import copy
-from timeit import default_timer as timer
-from matplotlib import pyplot as plt
-import matplotlib.image as mpimg
 
 class Hand:
     '''
@@ -151,32 +148,30 @@ class Hit_Hand:
             print('Table:')
             print(self.table)
             
-    #this needs to be tested
     def straight_flush(self):
         hand = []
         if (self.suits.count('H') >= 5):
             for card in self.total_hand:
                 if card[1] == 'H':
-                    hand.append(card)
+                    hand.append(card[0])
                         
         elif (self.suits.count('S') >= 5):
             for card in self.total_hand:
                 if card[1] == 'S':
-                    hand.append(card)
+                    hand.append(card[0])
                     
         elif (self.suits.count('D') >= 5):
             for card in self.total_hand:
                 if card[1] == 'D':
-                    hand.append(card)
+                    hand.append(card[0])
                     
         elif (self.suits.count('C') >= 5):
             for card in self.total_hand:
                 if card[1] == 'C':
-                    hand.append(card)
+                    hand.append(card[0])
         if len(hand) >= 5:
             #if their is a 14 add a 1 to the begining because Ace is high or low for straight
-            hand_values = [x[0] for x in hand]
-            cards = list(set(hand_values))
+            cards = list(set(hand))
             if cards.count(14) == 1:
                 cards.append(1)
             cards.sort()
@@ -184,11 +179,11 @@ class Hit_Hand:
             for i in range(len(cards)-1):
                 if cards[i] + 1 == cards[i + 1]:
                     c += 1
-                elif c == 5:
+                elif c >= 5:
                     return True
                 else:
                     c = 1
-            return (c == 5)
+            return (c >= 5)
         return False
     
     def four_of_kind(self):

@@ -1,18 +1,18 @@
 import dash
 from dash.dependencies import Input, Output, State, ClientsideFunction
 import dash_core_components as dcc
-import dash_bootstrap_components as dbc
 import dash_html_components as html
 import base64
 import TH
 
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
-
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 
+#app.scripts.config.serve_locally = True
 server = app.server
-
+app.title='Texas Holdem Simulator'
+relative_path = 'https://texasholdemdashapp.herokuapp.com'
 ########################################################
 ########################################################
 ########################################################
@@ -34,7 +34,6 @@ def hand_ranked(hand):
         'two_pair' : Holdem.two_pair(),             #two pair
         'pair' : Holdem.pair()                      #pair
         }
-
 
 def probabilities(hand, n = 1000):    
     straight_flush = 0
@@ -258,7 +257,7 @@ cards_listed = [
 ]
 
 
-app = dash.Dash()
+# app = dash.Dash()
 
 layout = dict(
     autosize=True,
@@ -281,9 +280,6 @@ Y, X = zip(*prob_of_hitting.items())
 # Create app layout
 app.layout = html.Div(
     [
-        dcc.Store(id="aggregate_data"),
-        # empty Div to trigger javascript file for graph resizing
-        html.Div(id="output-clientside"),
         html.Div(
             [
                 html.Div(
@@ -336,19 +332,20 @@ app.layout = html.Div(
         html.Div([
             #ABOUT TAB
             html.Div([
+            html.Div([
             dcc.Tabs([
                 dcc.Tab(label = "About", children = [
                     html.Div([
-                        html.H5('WHat is Texas Holdem Simulator?'),
+                        html.H5('What is Texas Holdem Simulator?'),
                         html.P(
                             '''
-                            This Dash app enables users to simulate houndreds of thousands of hands of Texas Holdem 
-                            to estimate probabilities of hitting certain hands as well as winning with certain cards.
+                            This Dash app enables users to simulate thousands of hands of Texas Holdem 
+                            to estimate probabilities of hitting hands as well as winning with certain cards.
                             The app shuffles a deck and distributes cards, recording if the players hand won as well 
                             as the number of times each hand was hit.  It can take several minutes to iterate through 
                             simulations.  The Select tab enables you to input cards and the Randomize tab creates random 
                             card layouts.  Visit the Github listed below to download the Dash app as well as a Jupyter 
-                            Notebook with more capabilities.  Enjoy!  
+                            Notebook with more capabilities. 
                             '''
                             ),
                         html.A(
@@ -356,12 +353,12 @@ app.layout = html.Div(
                             href="https://github.com/MichaelEmmert/Texas_Holdem",
                         )
                     ])
-                    ],className="pretty_container"),
+                    ],className="mini_container"),
             #SELECT CARD TAB
             dcc.Tab(label = "Select",children = [
                 html.Div([
                         html.H6(
-                            "Number of players sitting at the Table:",
+                            "Number of players in the Hand:",
                             className="control_label",
                         ),
                         dcc.Slider(
@@ -417,19 +414,20 @@ app.layout = html.Div(
                             html.Button(
                                 'Update',
                                 id = 'selected-Button',
-                                className = 'dcc_control'
+                                className = 'dcc_control',
+                                style={'text-align': 'center'}
                             )
                         ],
                         style={'text-align': 'center'}
                         )
                     ]
                 )
-                ],className="pretty_container"),
+                ],className="mini_container"),
             # RANDOMIZE CARDS TAB
             dcc.Tab(label = "Randomize",children = [
                 html.Div([
                         html.H6(
-                            "Number of players sitting at the Table:",
+                            "Number of players in the Hand:",
                             className="control_label",
                         ),
                         dcc.Slider(
@@ -484,62 +482,62 @@ app.layout = html.Div(
                                 className = 'dcc_control'
                             )
                         ],
+                        id = 'submit',
                         style={'text-align': 'center'}
                         )
                     ]
                 )
-                ], className="pretty_container")
+                ], className="mini_container")
                 ])
-                ], className="pretty_container four columns"),
-
-                html.Div(
-                    [
-                    html.Div(
-                        [
+                ], 
+                style={'height':525}, #'63vh'
+                className="pretty_container four columns"),
+                #END OF TABS AND INPUT SECTION
+                html.Div([
+                    html.Div([
+                        html.Div([
+                            html.Div(
+                                [
+                                html.H6("Your Hand:"),
+                                html.Img(id='Card1-image', width = 100, height = 170),
+                                html.Img(id='Card2-image', width = 100, height = 170),
+                                ],
+                                className="pretty_container",
+                            ),
+                            html.Div(
+                                [
+                                html.H6("Cards on the Table:"),
+                                html.Img(id='Card3-image', width = 100, height = 170),
+                                html.Img(id='Card4-image', width = 100, height = 170),
+                                html.Img(id='Card5-image', width = 100, height = 170),
+                                html.Img(id='Card6-image', width = 100, height = 170)
+                                ],
+                                className="pretty_container"
+                            ),
+                       ], className = "row flex-display"
+                       ),
                         html.Div(
                             [
-                            html.H6("Your Hand:"),
-                            html.Img(id='Card1-image', width = 100, height = 170),
-                            html.Img(id='Card2-image', width = 100, height = 170),
+                                        html.Div(
+                            [
+                            dcc.Graph(id='Randomize-Button-win')
                             ],
-                            id="countGraphContainer",
-                            className="pretty_container",
+                            className="pretty_container seven columns",
+                                )
+                            ],
+                            className="countGraphContainer",
                         ),
-                        ]),
-                        html.Div(
-                            [
-                            html.H6("Cards on the Table:"),
-                            html.Img(id='Card3-image', width = 100, height = 170),
-                            html.Img(id='Card4-image', width = 100, height = 170),
-                            html.Img(id='Card5-image', width = 100, height = 170),
-                            html.Img(id='Card6-image', width = 100, height = 170)
                             ],
-                            className="pretty_container"
-                        )
-                    ],
-                    className="five columns",
-                ),
-
-                html.Div(
-                    [
-                    dcc.Graph(id='Randomize-Button-win')
-                    ],
-                    className="pretty_container three columns",
-                        )
-                    ],
-                    className="row flex-display",
-        ),
-        html.Div(
-            [
-                html.Div(
-                    [
-                    dcc.Graph(id='Randomize-Button-hand')
-                    ],
-                    className="pretty_container twelve columns",
-                )
-            ],
-            className="row flex-display",
-        ),
+                        ),
+                    ]),
+                ]),
+                                                html.Div(
+                                    [
+                                    dcc.Graph(id='Randomize-Button-hand')
+                                    ],
+                                    className="pretty_container eleven columns",
+                                )
+                ])
     ],
     id="mainContainer",
     style={"display": "flex", "flex-direction": "column"},
@@ -594,33 +592,27 @@ def singular_function(n_clicks,n_clicks_timestamp, n_players_input = 2,cards_dis
         texas_holdem_selector_list(number_of_players = n_players_s,list_input_hand = hand_selected,list_input_table = table_cards)
 
     ################
-    player_card1 = f'assets/cards/{str(Cards[0][0]) + Cards[0][1]}.PNG'
-    player_card2 = f'assets/cards/{str(Cards[1][0]) + Cards[1][1]}.PNG'
+    player_card1 = app.get_asset_url(f'{str(Cards[0][0]) + Cards[0][1]}.png')
+    player_card2 = app.get_asset_url(f'{str(Cards[1][0]) + Cards[1][1]}.png')
+
     if cards_displayed == 0:
-        table1 = 'assets/cards/blank.PNG'
-        table2 = 'assets/cards/blank.PNG'
-        table3 = 'assets/cards/blank.PNG'
-        table4 = 'assets/cards/blank.PNG'
+        table1 = app.get_asset_url('blank.png')
+        table2 = app.get_asset_url('blank.png')
+        table3 = app.get_asset_url('blank.png')
+        table4 = app.get_asset_url('blank.png')
 
     elif cards_displayed == 3:
-        table1 = f'assets/cards/{str(table[0][0][0]) + table[0][0][1]}.PNG'
-        table2 = f'assets/cards/{str(table[0][1][0]) + table[0][1][1]}.PNG'
-        table3 = f'assets/cards/{str(table[0][2][0]) + table[0][2][1]}.PNG'
-        table4 = 'assets/cards/blank.PNG'
+        table1 = app.get_asset_url(f'{str(table[0][0][0]) + table[0][0][1]}.png')
+        table2 = app.get_asset_url(f'{str(table[0][1][0]) + table[0][1][1]}.png')
+        table3 = app.get_asset_url(f'{str(table[0][2][0]) + table[0][2][1]}.png')
+        table4 = app.get_asset_url('blank.png')
     elif cards_displayed == 4:
-        table1 = f'assets/cards/{str(table[0][0][0]) + table[0][0][1]}.PNG'
-        table2 = f'assets/cards/{str(table[0][1][0]) + table[0][1][1]}.PNG'
-        table3 = f'assets/cards/{str(table[0][2][0]) + table[0][2][1]}.PNG'
-        table4 = f'assets/cards/{str(table[0][3][0]) + table[0][3][1]}.PNG'
-
-
-    card1_base64 = 'data:image/png;base64,' + base64.b64encode(open(player_card1, 'rb').read()).decode('ascii')
-    card2_base64 = 'data:image/png;base64,' + base64.b64encode(open(player_card2, 'rb').read()).decode('ascii')
-    card3_base64 = 'data:image/png;base64,' + base64.b64encode(open(table1, 'rb').read()).decode('ascii')
-    card4_base64 = 'data:image/png;base64,' + base64.b64encode(open(table2, 'rb').read()).decode('ascii')
-    card5_base64 = 'data:image/png;base64,' + base64.b64encode(open(table3, 'rb').read()).decode('ascii')
-    card6_base64 = 'data:image/png;base64,' + base64.b64encode(open(table4, 'rb').read()).decode('ascii')
+        table1 = app.get_asset_url(f'{str(table[0][0][0]) + table[0][0][1]}.png')
+        table2 = app.get_asset_url(f'{str(table[0][1][0]) + table[0][1][1]}.png')
+        table3 = app.get_asset_url(f'{str(table[0][2][0]) + table[0][2][1]}.png')
+        table4 = app.get_asset_url(f'{str(table[0][3][0]) + table[0][3][1]}.png')
     ################
+
     prob_of_hitting = probabilities(hand = Cards, n = simulated_hands)
     probability_of_winning = winner_probabilty(Cards, n = simulated_hands)
 
@@ -638,7 +630,7 @@ def singular_function(n_clicks,n_clicks_timestamp, n_players_input = 2,cards_dis
                 'opacity': 0.7,
                 'line': {
                   'color': 'rgb(0,0,0)',
-                 'width': 1.5
+                 'width': 3
                         }
             }
         }],
@@ -648,7 +640,6 @@ def singular_function(n_clicks,n_clicks_timestamp, n_players_input = 2,cards_dis
             "marker": {"bar": {"color": "white", "width": 1}},
             'plot_bgcolor': "#F9F9F9",
             'paper_bgcolor': "#F9F9F9",
-            'orientation':'h',
             "xaxis": {
                 "title": 'Probability',
                 "side": "bottom",
@@ -667,10 +658,11 @@ def singular_function(n_clicks,n_clicks_timestamp, n_players_input = 2,cards_dis
     winner_graph =  {
     'data': [
         {
-        'x':['Probability of Winning'],
-        'y':[probability_of_winning], 
+        'x':[probability_of_winning],
+        'y':['Probability of Winning'], 
         'type':'bar', 
         'name':'Best Hand',
+        'orientation':'h',
         'marker': {
                 'color': 'rgb(255,128,128)',
                 'opacity': 0.5,
@@ -682,9 +674,11 @@ def singular_function(n_clicks,n_clicks_timestamp, n_players_input = 2,cards_dis
     }],
     'layout':{'title':'Best Hand Probability',
             "showlegend": False,
+            'autosize':False,
+            'height': 250,
            'plot_bgcolor': "#F9F9F9",
            'paper_bgcolor': "#F9F9F9",
-            "yaxis": {
+            "xaxis": {
                 "title": 'Probability',
                 "side": "bottom",
                 "type": "linear",
@@ -699,7 +693,7 @@ def singular_function(n_clicks,n_clicks_timestamp, n_players_input = 2,cards_dis
             }
             }
         }
-    return [hand_hit_graph, winner_graph, card1_base64, card2_base64, card3_base64, card4_base64, card5_base64,card6_base64]
+    return [hand_hit_graph, winner_graph, player_card1, player_card2, table1, table2, table3, table4]
 
 if __name__ == '__main__':
-	app.run_server(debug = True)
+	server.run(debug=True, port=8080)

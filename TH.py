@@ -157,26 +157,25 @@ class Hit_Hand:
         if (self.suits.count('H') >= 5):
             for card in self.total_hand:
                 if card[1] == 'H':
-                    hand.append(card)
+                    hand.append(card[0])
                         
         elif (self.suits.count('S') >= 5):
             for card in self.total_hand:
                 if card[1] == 'S':
-                    hand.append(card)
+                    hand.append(card[0])
                     
         elif (self.suits.count('D') >= 5):
             for card in self.total_hand:
                 if card[1] == 'D':
-                    hand.append(card)
+                    hand.append(card[0])
                     
         elif (self.suits.count('C') >= 5):
             for card in self.total_hand:
                 if card[1] == 'C':
-                    hand.append(card)
+                    hand.append(card[0])
         if len(hand) >= 5:
             #if their is a 14 add a 1 to the begining because Ace is high or low for straight
-            hand_values = [x[0] for x in hand]
-            cards = list(set(hand_values))
+            cards = list(set(hand))
             if cards.count(14) == 1:
                 cards.append(1)
             cards.sort()
@@ -184,11 +183,11 @@ class Hit_Hand:
             for i in range(len(cards)-1):
                 if cards[i] + 1 == cards[i + 1]:
                     c += 1
-                elif c == 5:
+                elif c >= 5:
                     return True
                 else:
                     c = 1
-            return (c == 5)
+            return (c >= 5)
         return False
     
     def four_of_kind(self):
@@ -282,43 +281,43 @@ class Best_Hand:
         if (self.suits.count('H') >= 5):
             for card in self.total_hand:
                 if card[1] == 'H':
-                    hand.append(card)
+                    hand.append(card[0])
                         
         elif (self.suits.count('S') >= 5):
             for card in self.total_hand:
                 if card[1] == 'S':
-                    hand.append(card)
+                    hand.append(card[0])
                     
         elif (self.suits.count('D') >= 5):
             for card in self.total_hand:
                 if card[1] == 'D':
-                    hand.append(card)
+                    hand.append(card[0])
                     
         elif (self.suits.count('C') >= 5):
             for card in self.total_hand:
                 if card[1] == 'C':
-                    hand.append(card)
+                    hand.append(card[0])
         if len(hand) >= 5:
             #if their is a 14 add a 1 to the begining because Ace is high or low for straight
-            cards = list(set(self.value))
+            cards = list(set(hand))
             if cards.count(14) == 1:
                 cards.append(1)
             cards.sort()
             c = 1
-            hand = []
+            hand_suited = []
             for i in range(len(cards)-1):
                 if (cards[i] + 1) == cards[i + 1]:
                     c += 1
-                    if len(hand) == 0:
-                        hand.append(cards[i])
-                        hand.append(cards[i+1])
+                    if len(hand_suited) == 0:
+                        hand_suited.append(cards[i])
+                        hand_suited.append(cards[i+1])
                     else:
-                        hand.append(cards[i+1])
+                        hand_suited.append(cards[i+1])
                 elif c >= 5:
-                    return hand[-5:]
+                    return hand_suited[-5:]
                 else:
                     c = 1
-                    hand = []
+                    hand_suited = []
                     
     def four_of_kind(self):
         hand = []
